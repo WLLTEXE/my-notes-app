@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои Напоминания</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #17212b; color: #ffffff; }
+        h1 { color: #64b5f6; }
+        #reminders-list { margin-top: 20px; }
+        .reminder-item { background-color: #232e3c; padding: 15px; border-radius: 8px; margin-bottom: 10px; }
+        .reminder-text { font-size: 16px; }
+        .reminder-date { font-size: 12px; color: #90caf9; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Мои Напоминания</h1>
+    <div id="reminders-list">
+        <p>Загрузка...</p>
+    </div>
+
+    <script>
+        // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Разворачиваем на весь экран
+
+        // Функция для получения данных от бота
+        // Пока мы просто показываем тестовые данные, но скоро они будут приходить из бота
+        function loadReminders() {
+            const list = document.getElementById('reminders-list');
+            list.innerHTML = `
+                <div class="reminder-item">
+                    <div class="reminder-text">Купить хлеб</div>
+                    <div class="reminder-date">Сегодня в 18:00</div>
+                </div>
+                <div class="reminder-item">
+                    <div class="reminder-text">Позвонить маме</div>
+                    <div class="reminder-date">Завтра в 12:00</div>
+                </div>
+            `;
+        }
+
+        // Запускаем загрузку при открытии
+        loadReminders();
+
+        // Пример того, как можно отправить данные обратно в бота
+        // (пригодится позже)
+        // tg.sendData(JSON.stringify({ action: "test" }));
+    </script>
+</body>
+</html>
