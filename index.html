@@ -2,31 +2,72 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Мои Напоминания</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; padding: 20px; background-color: #17212b; color: #ffffff; }
-        h1 { color: #64b5f6; }
-        #reminders-list { margin-top: 20px; }
-        .reminder-item { background-color: #232e3c; padding: 15px; border-radius: 8px; margin-bottom: 10px; }
-        .reminder-text { font-size: 16px; }
-        .reminder-date { font-size: 12px; color: #90caf9; margin-top: 5px; }
+        /* Используем нативные цвета Telegram */
+        :root {
+            --bg-color: var(--tg-theme-bg-color, #17212b);
+            --text-color: var(--tg-theme-text-color, #ffffff);
+            --hint-color: var(--tg-theme-hint-color, #708499);
+            --button-color: var(--tg-theme-button-color, #5288c1);
+            --button-text-color: var(--tg-theme-button-text-color, #ffffff);
+            --secondary-bg: var(--tg-theme-secondary-bg-color, #232e3c);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 16px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .reminder-item {
+            background-color: var(--secondary-bg);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .reminder-text {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .reminder-date {
+            font-size: 13px;
+            color: var(--hint-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--hint-color);
+            margin-top: 40px;
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
     <h1>Мои Напоминания</h1>
     <div id="reminders-list">
-        <p>Загрузка...</p>
+        <p class="empty-state">Загрузка...</p>
     </div>
 
     <script>
-        // Инициализация Telegram Web App
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Разворачиваем на весь экран
+        tg.expand(); // Открываем на весь экран
 
-        // Функция для получения данных от бота
-        // Пока мы просто показываем тестовые данные, но скоро они будут приходить из бота
+        // Пока здесь заглушка, но дизайн уже нативный!
         function loadReminders() {
             const list = document.getElementById('reminders-list');
             list.innerHTML = `
@@ -41,12 +82,7 @@
             `;
         }
 
-        // Запускаем загрузку при открытии
         loadReminders();
-
-        // Пример того, как можно отправить данные обратно в бота
-        // (пригодится позже)
-        // tg.sendData(JSON.stringify({ action: "test" }));
     </script>
 </body>
 </html>
