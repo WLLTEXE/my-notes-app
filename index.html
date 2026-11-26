@@ -6,7 +6,6 @@
     <title>Мои Напоминания</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* Используем нативные цвета Telegram */
         :root {
             --bg-color: var(--tg-theme-bg-color, #17212b);
             --text-color: var(--tg-theme-text-color, #ffffff);
@@ -15,74 +14,71 @@
             --button-text-color: var(--tg-theme-button-text-color, #ffffff);
             --secondary-bg: var(--tg-theme-secondary-bg-color, #232e3c);
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            padding: 16px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-        }
-
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .reminder-item {
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 16px; background-color: var(--bg-color); color: var(--text-color); margin: 0; }
+        h1 { font-size: 22px; margin-bottom: 20px; text-align: center; }
+        
+        .form-container {
             background-color: var(--secondary-bg);
             padding: 16px;
             border-radius: 12px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
+        input {
+            width: 100%; box-sizing: border-box; padding: 12px; margin-bottom: 10px;
+            border-radius: 8px; border: 1px solid var(--hint-color); 
+            background-color: var(--bg-color); color: var(--text-color); font-size: 15px;
+        }
+        input::placeholder { color: var(--hint-color); }
+        button {
+            width: 100%; padding: 12px; border: none; border-radius: 8px;
+            background-color: var(--button-color); color: var(--button-text-color);
+            font-size: 16px; font-weight: bold; cursor: pointer;
+        }
+        button:active { opacity: 0.8; }
 
-        .reminder-text {
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 6px;
+        .reminder-item {
+            background-color: var(--secondary-bg); padding: 16px;
+            border-radius: 12px; margin-bottom: 12px;
         }
-
-        .reminder-date {
-            font-size: 13px;
-            color: var(--hint-color);
-        }
-
-        .empty-state {
-            text-align: center;
-            color: var(--hint-color);
-            margin-top: 40px;
-            font-size: 15px;
-        }
+        .reminder-text { font-size: 16px; font-weight: 500; margin-bottom: 4px; }
+        .reminder-date { font-size: 13px; color: var(--hint-color); }
     </style>
 </head>
 <body>
-    <h1>Мои Напоминания</h1>
+    <h1>Добавить напоминание</h1>
+    
+    <div class="form-container">
+        <input type="text" id="reminder-text" placeholder="Что нужно сделать?">
+        <input type="number" id="reminder-time" placeholder="Через сколько минут?" min="1">
+        <button onclick="sendReminder()">Сохранить в бота</button>
+    </div>
+
+    <h2 style="font-size: 18px; margin-top: 30px;">Ваши задачи</h2>
     <div id="reminders-list">
-        <p class="empty-state">Загрузка...</p>
+        <!-- Сюда мы потом научимся выводить реальные данные -->
+        <p style="color: var(--hint-color); font-size: 14px;">(Здесь пока пусто, реальные данные появятся, когда мы перенесем бота на сервер)</p>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Открываем на весь экран
+        tg.expand();
 
-        // Пока здесь заглушка, но дизайн уже нативный!
-        function loadReminders() {
-            const list = document.getElementById('reminders-list');
-            list.innerHTML = `
-                <div class="reminder-item">
-                    <div class="reminder-text">Купить хлеб</div>
-                    <div class="reminder-date">Сегодня в 18:00</div>
-                </div>
-                <div class="reminder-item">
-                    <div class="reminder-text">Позвонить маме</div>
-                    <div class="reminder-date">Завтра в 12:00</div>
-                </div>
-            `;
+        function sendReminder() {
+            const text = document.getElementById('reminder-text').value;
+            const time = document.getElementById('reminder-time').value;
+
+            if (!text || !time) {
+                tg.showAlert("Пожалуйста, заполни оба поля!");
+                return;
+            }
+
+            // Отправляем данные боту
+            const data = { action: "add_reminder", text: text, minutes: time };
+            tg.sendData(JSON.stringify(data));
+            
+            // Закрываем окно приложения
+            tg.close();
         }
-
-        loadReminders();
     </script>
 </body>
 </html>
